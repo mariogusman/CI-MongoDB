@@ -104,6 +104,34 @@ def find_record():
                 print(k.capitalize() + ": " + v.capitalize())
 
 
+def edit_record():
+    # assigns the returned value of get_record() to 'doc'
+    # creates an empty dic called update_doc
+    # loops through k(eys) and v(alues) of the celeb
+    # checks if key is NOT unique id
+    # if key is not unique id, prints current Key [value] and asks for input
+    # -- example: Key [value] > newValueHere
+    # if the input is empty string will use previous value as new value(no update)
+    # after that attepts update using the new dict update_doc (filled with the input data)
+    # -- example: coll.update_one(result of get_record, {"$set": new dict update_doc})
+    doc = get_record()
+    if doc:
+        update_doc = {}  # defines empty dict
+        print("")
+        for k, v in doc.items():
+            if k != "_id":
+                update_doc[k] = input(k.capitalize() + " [" + v + "] > ")
+
+                if update_doc[k] == "":
+                    update_doc[k] = v
+        try:
+            coll.update_one(doc, {"$set": update_doc})
+            print("")
+            print("Document updated")
+        except:
+            print("Error accessing database.")
+
+
 def main_loop():
     while True:
         option = show_menu()
@@ -112,7 +140,7 @@ def main_loop():
         elif option == "2":
             find_record()
         elif option == "3":
-            print("You have selected option 3. Edit a Record")
+            edit_record()
         elif option == "4":
             print("You have selected option 4. Delete a Record")
         elif option == "5":
