@@ -32,7 +32,7 @@ def show_menu():
     return option
 
 
-def get_record():
+def get_record():  # gets first+last names, searches collection for it and returns result
     print("")  # empty line for clarity
     # asks user for fname they're looking for
     # also asks for last name for a more precise search
@@ -41,7 +41,7 @@ def get_record():
 
     try:
         # uses the input names in a .find() and assigns result to 'doc'
-        doc = coll.find({"first": first.lower(), "last": last.lower()})
+        doc = coll.find_one({"first": first.lower(), "last": last.lower()})
     except:
         # generic message if any error
         print("Error accessing database")
@@ -90,13 +90,27 @@ def add_record():
         print("Error accessing the database")
 
 
+def find_record():
+    # assigns returned value from get_record() to var 'doc'
+    # if doc is true (not null, not false, not empty string)
+    # will loop through k(keys) and v(values) of the celeb
+    # checks if key is NOT the unique id of the celeb
+    # prints all the keys and values capitalized
+    doc = get_record()
+    if doc:
+        print("")
+        for k, v in doc.items():
+            if k != "_id":
+                print(k.capitalize() + ": " + v.capitalize())
+
+
 def main_loop():
     while True:
         option = show_menu()
         if option == "1":
             add_record()
         elif option == "2":
-            print("You have selected option 2. Find a Record by Name")
+            find_record()
         elif option == "3":
             print("You have selected option 3. Edit a Record")
         elif option == "4":
