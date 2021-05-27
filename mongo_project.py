@@ -82,7 +82,7 @@ def add_record():
     try:
         # attempts to .insert() the new_doc dictionary into our collection
         # coll is the variable that grants us access to the collection
-        coll.insert(new_doc)
+        coll.insert_one(new_doc)
         print("")
         print("Document inserted")
     except:
@@ -132,6 +132,27 @@ def edit_record():
             print("Error accessing database.")
 
 
+def delete_record():
+    doc = get_record()
+    if doc:
+        print("")
+        for k, v in doc.items():
+            if k != "_id":
+                print(k.capitalize() + " : " + v.capitalize())
+
+        print("")
+        confirmation = input("Is this the record you want to delete?\nY/N > ")
+        print("")
+        if confirmation.lower() == "y":
+            try:
+                coll.remove(doc)
+                print("Document deleted!")
+            except:
+                print("Error accessing database.")
+        else:
+            print("Record not deleted.")
+
+
 def main_loop():
     while True:
         option = show_menu()
@@ -143,6 +164,7 @@ def main_loop():
             edit_record()
         elif option == "4":
             print("You have selected option 4. Delete a Record")
+            delete_record()
         elif option == "5":
             print("Exiting...")
             conn.close()
