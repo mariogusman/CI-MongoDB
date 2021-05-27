@@ -1,8 +1,9 @@
 import os
 import pymongo
+
 if os.path.exists("env.py"):
     import env
-    
+
 
 MONGO_URI = os.environ.get("MONGO_URI")
 DATABASE = "myFirstDB"
@@ -16,20 +17,20 @@ def mongo_connect(url):
         return conn
     except pymongo.errors.ConnectionFailure as e:
         print("could not connect to MongoDB: %s") % e
-        
+
 
 conn = mongo_connect(MONGO_URI)
 
 coll = conn[DATABASE][COLLECTION]
 
 new_doc = {
-           "first":"douglas",
-           "last":"adams",
-           "dob":"11/03/1952",
-           "hair_color":"grey",
-           "occupation":"writter",
-           "nationality":"british"
-           }
+    "first": "douglas",
+    "last": "adams",
+    "dob": "11/03/1952",
+    "hair_color": "grey",
+    "occupation": "writter",
+    "nationality": "british",
+}
 
 # To insert multiple entries at once you must create an array of dictionaries
 # new_docs = [{     --notice how it starts with a square bracket []
