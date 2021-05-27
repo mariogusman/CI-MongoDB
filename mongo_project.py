@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import NamedTuple, Optional
 import pymongo
 if os.path.exists("env.py"):
     import env
@@ -30,11 +30,40 @@ def show_menu():
     option = input("Enter option: ")
     return option
 
+
+def add_record():
+    print("")
+    first = input("Enter first name > ")
+    last = input("Enter last name > ")
+    dob = input("Enter date of birth > ")
+    gender = input("Enter gender > ")
+    hair_color = input("Enter hair color > ")
+    occupation = input("Enter occupation > ")
+    nationality = input("Enter nationality > ")
+    
+    new_doc = {
+        "first" : first.lower(),
+        "last" : last.lower(),
+        "dob" : dob,
+        "gender" : gender,
+        "hair_color" : hair_color,
+        "occupation" : occupation,
+        "nationality" : nationality
+    }
+    
+    try:
+        coll.insert(new_doc)
+        print("")
+        print("Document inserted")
+    except:
+        print("Error accessing the database")
+
+
 def main_loop():
     while True:
         option = show_menu()
         if option == "1":
-            print("You have selected option 1. Add a Record")
+            add_record()
         elif option == "2":
             print("You have selected option 2. Find a Record by Name")
         elif option == "3":
@@ -42,6 +71,7 @@ def main_loop():
         elif option == "4":
             print("You have selected option 4. Delete a Record")
         elif option == "5":
+            print("Exiting...")
             conn.close()
             break
         else:
